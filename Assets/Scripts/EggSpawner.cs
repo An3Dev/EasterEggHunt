@@ -14,10 +14,18 @@ public class EggSpawner : MonoBehaviour
     public LayerMask mask;
 
     public static EggSpawner Instance;
+
+    public GameObject goldenEggSpawnContainer;
+
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
+
+        int randomNum = Random.Range(0, goldenEggSpawnContainer.transform.childCount - 1);
+
+        Instantiate(goldenEggPrefab, goldenEggSpawnContainer.transform.GetChild(randomNum).position, goldenEggSpawnContainer.transform.GetChild(randomNum).rotation);
+
         for (int i = 0; i < numOfEggs; i++)
         {
             int random = Random.Range(0, 1);

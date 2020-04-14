@@ -33,15 +33,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             float yRot = 0;
             float xRot = 0;
-            if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
-            {
-                yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
-                xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
-            } else
-            {
-                yRot = LookAxis.x * XSensitivity;
-                xRot = LookAxis.y * YSensitivity;
-            }
+            //if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+            //{
+            yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
+            xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
+            //} else
+            //{
+            //    yRot = LookAxis.x * XSensitivity;
+            //    xRot = LookAxis.y * YSensitivity;
+            //}
            
 
             m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);

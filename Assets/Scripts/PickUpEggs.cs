@@ -18,12 +18,16 @@ public class PickUpEggs : MonoBehaviour
 
     int eggsSpawned = 0;
 
-    public GameObject confettiPrefab;
+    public GameObject confettiPrefab, goldenEggConfetti;
 
     public TextMeshProUGUI timerText;
     public float timer;
 
     public GameObject winPanel;
+
+    int restartClicks = 0;
+
+    bool wonGame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +39,8 @@ public class PickUpEggs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
+        if (!wonGame)
+            timer += Time.deltaTime;
 
         string minutes = Mathf.Floor(timer / 60).ToString("00");
         string seconds = Mathf.Floor(timer % 60).ToString("00");
@@ -44,18 +49,43 @@ public class PickUpEggs : MonoBehaviour
 
         if (eggsCollected >= eggsSpawned)
         {
+            wonGame = true;
             // Won game
-            winPanel.SetActive(true);
 
+            if (!winPanel.activeInHierarchy)
+            {
+                winPanel.SetActive(true);
+
+                winPanel.GetComponentInChildren<TextMeshProUGUI>().text = "You collected all of the eggs in "
+                       + (int.Parse(minutes) > 0 ? minutes + (int.Parse(minutes) == 1 ? " minute and " : "minutes and") : "") 
+                            + (int.Parse(seconds) != 0 ? seconds + (int.Parse(seconds) == 1 ? " seconds!" : " seconds!") : "");
+            }
+
+            if (int.Parse(minutes) <= 1)
+            {
+               
+            } else
+            {
+
+            }
             if (Input.GetKeyDown(KeyCode.R))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            restartClicks++;
+            if (restartClicks > 5)
+            {
+                restartClicks = 0;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
         //if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
         //{
-            if (Input.GetMouseButton(0) && nearEgg)
+        if (Input.GetMouseButton(0) && nearEgg)
             {
                 RaycastHit hit = new RaycastHit();
                 if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, 10, eggMask))
@@ -94,17 +124,21 @@ public class PickUpEggs : MonoBehaviour
 
         if (egg.CompareTag("GoldenEgg"))
         {
-            eggsCollected += 5;
+            timer -= 20;
+            eggsCollected++;
+            GameObject confetti = Instantiate(goldenEggConfetti, egg.position, Quaternion.identity);
+            Destroy(confetti, 31);
         } else
         {
             eggsCollected++;
+            GameObject confetti = Instantiate(confettiPrefab, egg.position, Quaternion.identity);
+            Destroy(confetti, 31);
         }
 
         eggText.text = eggsCollected.ToString();
 
         // spawn confetti effect
-        GameObject confetti = Instantiate(confettiPrefab, egg.position, Quaternion.identity);
-        Destroy(confetti, 31);
+        
     }
 
     void OnTriggerEnter(Collider other)
