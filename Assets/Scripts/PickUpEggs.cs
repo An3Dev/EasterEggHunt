@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 public class PickUpEggs : MonoBehaviour
 {
 
@@ -22,6 +22,9 @@ public class PickUpEggs : MonoBehaviour
 
     public TextMeshProUGUI timerText;
     public float timer;
+
+    public GameObject winPanel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,14 +39,18 @@ public class PickUpEggs : MonoBehaviour
 
         string minutes = Mathf.Floor(timer / 60).ToString("00");
         string seconds = Mathf.Floor(timer % 60).ToString("00");
-
        
         timerText.text = minutes + ":" + seconds;
 
         if (eggsCollected >= eggsSpawned)
         {
             // Won game
+            winPanel.SetActive(true);
 
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
         }
 
         //if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
