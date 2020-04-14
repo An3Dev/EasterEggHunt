@@ -34,6 +34,7 @@ public class PickUpEggs : MonoBehaviour
     {
         mainCamera = GetComponentInChildren<Camera>();
         eggsSpawned = EggSpawner.Instance.numOfEggs;
+        Application.targetFrameRate = -1;
     }
 
     // Update is called once per frame
@@ -57,7 +58,7 @@ public class PickUpEggs : MonoBehaviour
                 winPanel.SetActive(true);
 
                 winPanel.GetComponentInChildren<TextMeshProUGUI>().text = "You collected all of the eggs in "
-                       + (int.Parse(minutes) > 0 ? minutes + (int.Parse(minutes) == 1 ? " minute and " : "minutes and") : "") 
+                       + (int.Parse(minutes) > 0 ? minutes + (int.Parse(minutes) == 1 ? " minute and " : "minutes and ") : "") 
                             + (int.Parse(seconds) != 0 ? seconds + (int.Parse(seconds) == 1 ? " seconds!" : " seconds!") : "");
             }
 
@@ -127,17 +128,15 @@ public class PickUpEggs : MonoBehaviour
             timer -= 20;
             eggsCollected++;
             GameObject confetti = Instantiate(goldenEggConfetti, egg.position, Quaternion.identity);
-            Destroy(confetti, 31);
+            Destroy(confetti, 10);
         } else
         {
             eggsCollected++;
             GameObject confetti = Instantiate(confettiPrefab, egg.position, Quaternion.identity);
-            Destroy(confetti, 31);
+            Destroy(confetti, 16);
         }
 
         eggText.text = eggsCollected.ToString();
-
-        // spawn confetti effect
         
     }
 

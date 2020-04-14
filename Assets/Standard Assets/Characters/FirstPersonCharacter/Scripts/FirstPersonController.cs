@@ -45,6 +45,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public float jumpMovementMultiplier = 0.25f;
         public float strafeVelocityMultiplier = 0.5f;
 
+        public float sensChange = 0.05f;
 
         private bool isCrouching = false;
 
@@ -70,6 +71,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
+            if (Input.GetKey(KeyCode.Alpha1))
+            {
+                m_MouseLook.XSensitivity -= (m_MouseLook.XSensitivity - sensChange > sensChange) ? sensChange : 0;
+                m_MouseLook.YSensitivity -= (m_MouseLook.YSensitivity - sensChange > sensChange) ? sensChange : 0;
+            } else if (Input.GetKey(KeyCode.Alpha2))
+            {
+                m_MouseLook.XSensitivity += 0.1f;
+                m_MouseLook.YSensitivity += 0.1f;
+            }
+
             GetInput(out speed);
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -96,7 +107,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
             {
                 StartCoroutine(m_JumpBob.DoBobCycle());
-                PlayLandingSound();
+                //PlayLandingSound();
                 m_MoveDir.y = 0f;
                 m_Jumping = false;
             }
@@ -143,7 +154,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 if (m_Jump)
                 {
                     m_MoveDir.y = m_JumpSpeed;
-                    PlayJumpSound();
+                    //PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
                 }
@@ -184,7 +195,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             
             m_NextStep = m_StepCycle + m_StepInterval;
 
-            PlayFootStepAudio();
+            //PlayFootStepAudio();
         }
 
 
