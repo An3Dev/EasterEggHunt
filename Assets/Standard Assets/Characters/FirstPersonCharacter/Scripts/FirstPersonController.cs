@@ -73,12 +73,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             if (Input.GetKey(KeyCode.Alpha1))
             {
-                m_MouseLook.XSensitivity -= (m_MouseLook.XSensitivity - sensChange > sensChange) ? sensChange : 0;
-                m_MouseLook.YSensitivity -= (m_MouseLook.YSensitivity - sensChange > sensChange) ? sensChange : 0;
+                MouseLook.XSensitivity -= (MouseLook.XSensitivity - sensChange > sensChange) ? sensChange : 0;
+                MouseLook.YSensitivity -= (MouseLook.YSensitivity - sensChange > sensChange) ? sensChange : 0;
             } else if (Input.GetKey(KeyCode.Alpha2))
             {
-                m_MouseLook.XSensitivity += 0.1f;
-                m_MouseLook.YSensitivity += 0.1f;
+                MouseLook.XSensitivity += 0.1f;
+                MouseLook.YSensitivity += 0.1f;
             }
 
             GetInput(out speed);

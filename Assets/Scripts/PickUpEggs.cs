@@ -35,6 +35,8 @@ public class PickUpEggs : MonoBehaviour
         mainCamera = GetComponentInChildren<Camera>();
         eggsSpawned = EggSpawner.Instance.numOfEggs;
         Application.targetFrameRate = -1;
+
+        eggText.text = eggsCollected.ToString() + "/" + eggsSpawned;
     }
 
     // Update is called once per frame
@@ -58,7 +60,7 @@ public class PickUpEggs : MonoBehaviour
                 winPanel.SetActive(true);
 
                 winPanel.GetComponentInChildren<TextMeshProUGUI>().text = "You collected all of the eggs in "
-                       + (int.Parse(minutes) > 0 ? minutes + (int.Parse(minutes) == 1 ? " minute and " : "minutes and ") : "") 
+                       + (int.Parse(minutes) > 0 ? minutes + (int.Parse(minutes) == 1 ? " minute and " : " minutes and ") : "") 
                             + (int.Parse(seconds) != 0 ? seconds + (int.Parse(seconds) == 1 ? " seconds!" : " seconds!") : "");
             }
 
@@ -91,8 +93,6 @@ public class PickUpEggs : MonoBehaviour
                 RaycastHit hit = new RaycastHit();
                 if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, 10, eggMask))
                 {
-                    hit.collider.gameObject.SetActive(false);
-
                     AddEgg(hit.point, hit.collider.transform);
                 }
             }
@@ -122,10 +122,12 @@ public class PickUpEggs : MonoBehaviour
 
     void AddEgg(Vector3 position, Transform egg)
     {
+        egg.gameObject.SetActive(false);
 
         if (egg.CompareTag("GoldenEgg"))
         {
             timer -= 20;
+            timer = Mathf.Clamp(timer, 0, 100000);
             eggsCollected++;
             GameObject confetti = Instantiate(goldenEggConfetti, egg.position, Quaternion.identity);
             Destroy(confetti, 10);
@@ -136,7 +138,7 @@ public class PickUpEggs : MonoBehaviour
             Destroy(confetti, 16);
         }
 
-        eggText.text = eggsCollected.ToString();
+        eggText.text = eggsCollected.ToString() + "/" + eggsSpawned;
         
     }
 
@@ -146,6 +148,8 @@ public class PickUpEggs : MonoBehaviour
         {
             nearEgg = true;
         }
+
+        
     }
 
     void OnTriggerStay(Collider other)
