@@ -7,15 +7,10 @@ public class FPS : MonoBehaviour
 
     public TextMeshProUGUI text;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
+        // sets the fps text to the frames per second
         text.text = (1 / Time.deltaTime).ToString();
     }
 }

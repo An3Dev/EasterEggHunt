@@ -5,6 +5,10 @@ using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 
+// this code is part of the free standard assets of the UnityEngine
+// This code was slightly modified by me
+// It was mostly from the default First Person Controller of Unity
+
 namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof (CharacterController))]
