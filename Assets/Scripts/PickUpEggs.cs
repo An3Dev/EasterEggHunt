@@ -55,7 +55,7 @@ public class PickUpEggs : MonoBehaviour
         string seconds = Mathf.Floor(timer % 60).ToString("00");
        
         // set the timer text.
-        timerText.text = minutes + ":" + seconds;
+        timerText.text = (int.Parse(minutes) != 0 ? minutes + ":" + seconds : (timer % 60).ToString("00.0"));
 
         // if the user collected the required amount of eggs, they won.
         if (eggsCollected >= eggsSpawned)
@@ -105,17 +105,22 @@ public class PickUpEggs : MonoBehaviour
         // if the user clicks and the player trigger is activated(meaning that an egg is near)
         if (Input.GetMouseButton(0) && nearEgg)
             {
-                RaycastHit hit = new RaycastHit();
-                // raycasts from the center of the camera in the direction of the camera. It is only true if the ray hits a collider in the egg layer
-                if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, 10, eggMask))
-                {
-                    AddEgg(hit.point, hit.collider.transform);
-                }
+                CheckForEgg();
             }
     }
 
+    void CheckForEgg()
+    {
+        RaycastHit hit = new RaycastHit();
+        // raycasts from the center of the camera in the direction of the camera. It is only true if the ray hits a collider in the egg layer
+        if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, 10, eggMask))
+        {
+            AddEggPoint(hit.point, hit.collider.transform);
+        }
+    }
+
     // adds one to the player score
-    void AddEgg(Vector3 position, Transform egg)
+    void AddEggPoint(Vector3 position, Transform egg)
     {
         // disables the egg because it was found
         egg.gameObject.SetActive(false);
@@ -129,13 +134,13 @@ public class PickUpEggs : MonoBehaviour
             eggsCollected++;
 
             // spawn golden confetti
-            GameObject confetti = Instantiate(goldenEggConfetti, egg.position, Quaternion.identity);
+            GameObject confetti = Instantiate(goldenEggConfetti, position, Quaternion.identity);
             Destroy(confetti, 10);
         } else // if the clicked egg is not a golden egg, it's a regular egg
         {
             eggsCollected++;
             // spawn regular confetti
-            GameObject confetti = Instantiate(confettiPrefab, egg.position, Quaternion.identity);
+            GameObject confetti = Instantiate(confettiPrefab, position, Quaternion.identity);
             // destroy the confetti 16 seconds after it is spawned
             Destroy(confetti, 16);
         }
